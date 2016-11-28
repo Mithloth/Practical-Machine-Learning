@@ -26,7 +26,7 @@ The sensors used collected data continuously throughout this process, and each s
 
 ## Approach
 
-The dataset was split into a training, validation, and testing set based on a 60/20/20 rule.  Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis.  The effectiveness of each model was estimated using the validation data.  These four models were then combined using the validation data to create one final model using a random forest algorithm.  Finally, the accuracy was evaluated using the testing set.
+The dataset was split into a training, validation, and testing set based on a 60/20/20 rule.  Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis.  Cross-validation then used on these models via the validation data to estimate the accuracy.  These four models were then combined using the validation data to create one final model using a random forest algorithm.  Finally, one last round of cross-validation was used on this model via the testing data.
 
 ---
 title: "Practical Machine Learning Course Project"

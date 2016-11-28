@@ -134,12 +134,15 @@ $(document).ready(function () {
 </div>
 <div id="approach" class="section level2">
 <h2>Approach</h2>
-<p>The dataset was split into a training, validation, and testing set based on a 60/20/20 rule. Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis. The effectiveness of each model was estimated using the validation data. These four models were then combined using the validation data to create one final model using a random forest algorithm. Finally, the accuracy was evaluated using the testing set.</p>
+<p>The dataset was split into a training, validation, and testing set based on a 60/20/20 rule. Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis. Cross-validation then used on these models via the validation data to estimate the accuracy. These four models were then combined using the validation data to create one final model using a random forest algorithm. Finally, one last round of cross-validation was used on this model via the testing data.</p>
 </div>
 <div id="results" class="section level2">
 <h2>Results</h2>
-<p>The results of each of the four models with the validation set is given below:</p>
+<p>The cross-validation results of each of the four models with the validation set is given below:</p>
+<pre class="r"><code>print(&quot;Random Forest:&quot;)</code></pre>
 <pre><code>## [1] &quot;Random Forest:&quot;</code></pre>
+<pre class="r"><code>cm &lt;- confusionMatrix(predrf,validation$classe)
+cm$table</code></pre>
 <pre><code>##           Reference
 ## Prediction    A    B    C    D    E
 ##          A 1115    5    0    0    0
@@ -147,11 +150,15 @@ $(document).ready(function () {
 ##          C    1    6  678    9    2
 ##          D    0    0    2  634    3
 ##          E    0    0    0    0  716</code></pre>
+<pre class="r"><code>cm$overall</code></pre>
 <pre><code>##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
 ##      0.9918430      0.9896815      0.9885041      0.9944141      0.2844762 
 ## AccuracyPValue  McnemarPValue 
 ##      0.0000000            NaN</code></pre>
+<pre class="r"><code>print(&quot;Stochastic Gradient Boosting:&quot;)</code></pre>
 <pre><code>## [1] &quot;Stochastic Gradient Boosting:&quot;</code></pre>
+<pre class="r"><code>cm &lt;- confusionMatrix(predgbm,validation$classe)
+cm$table</code></pre>
 <pre><code>##           Reference
 ## Prediction    A    B    C    D    E
 ##          A 1096   30    0    1    4
@@ -159,11 +166,15 @@ $(document).ready(function () {
 ##          C    4   21  653   19    5
 ##          D    7    1    4  617   13
 ##          E    0    1    1    1  682</code></pre>
+<pre class="r"><code>cm$overall</code></pre>
 <pre><code>##       Accuracy          Kappa  AccuracyLower  AccuracyUpper   AccuracyNull 
 ##   9.569207e-01   9.454859e-01   9.500907e-01   9.630591e-01   2.844762e-01 
 ## AccuracyPValue  McnemarPValue 
 ##   0.000000e+00   6.395539e-10</code></pre>
+<pre class="r"><code>print(&quot;CART:&quot;)</code></pre>
 <pre><code>## [1] &quot;CART:&quot;</code></pre>
+<pre class="r"><code>cm &lt;- confusionMatrix(predrpart,validation$classe)
+cm$table</code></pre>
 <pre><code>##           Reference
 <!DOCTYPE html>
 
