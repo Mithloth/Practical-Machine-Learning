@@ -28,11 +28,41 @@ The sensors used collected data continuously throughout this process, and each s
 
 The dataset was split into a training, validation, and testing set based on a 60/20/20 rule.  Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis.  The effectiveness of each model was estimated using the validation data.  These four models were then combined using the validation data to create one final model using a random forest algorithm.  Finally, the accuracy was evaluated using the testing set.
 
+---
+title: "Practical Machine Learning Course Project"
+author: "Jonathan Holman"
+date: "November 26, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/jonho/Documents/ADS Training/Coursera/Practical Machine Learning")
+load("Course Project.RData")
+library(ggplot2)
+library(caret)
+data(mtcars)
+```
+
+## Overview
+
+The purpose of this project is to predict the way in which an exercise is being conducted based on data collected from the exerciser.  Specifically, E. Velloso et al attached sensors to subjects and collected data from these sensors as they conducted the exercises in specific ways.  In addition to performing them correctly, the subjects also performed the execises incorrectly in five specific ways.  Thus, the goal is not only to predict if an individual is performing an exercise correctly or incorrectly, but also to identify how it is incorrect.
+
+## Data
+
+The available data contained measurements from six individuals performing exercises.  Each window corresponds to a particular exercise class (i.e. the manner in which the exercise is performed), noted A-E.  A is the correct manner, with B-E being different incorrect types.  
+
+The sensors used collected data continuously throughout this process, and each set of measurements is recorded at every time stamp.  Once the individual transitioned between exercise classes, some additional statistics were recorded for the preceeding time window of the previous exercise class (e.g. mean, max, min, skew, kurtosis).  In this analysis, the summary statistics were set aside since the real-time performance is of more interest rather than just a post-mortem.  Even in the post-mortem case, it would be difficult to partition the time windows appropriately.  The time windows were assigned perfectly based on the collected data, so attempting to predict similar outcomes based on an imperfect measure would be more appropriate for a separate discussion.
+
+## Approach
+
+The dataset was split into a training, validation, and testing set based on a 60/20/20 rule.  Several algorithms were used to build separate models based on the training data: random forest, stochastic gradient boosting, CART, and linear discriminant analysis.  Cross-validation then used on these models via the validation data to estimate the accuracy.  These four models were then combined using the validation data to create one final model using a random forest algorithm.  Finally, one last round of cross-validation was used on this model via the testing data.
+
 ## Results
 
-The results of each of the four models with the validation set is given below:
+The cross-validation results of each of the four models with the validation set is given below:
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 print("Random Forest:")
 cm <- confusionMatrix(predrf,validation$classe)
 cm$table
@@ -55,7 +85,7 @@ cm$overall
 
 ```
 
-It can be seen that the top performing model is clearly the random forecast model, with an accuracy of over 99%, compared to the next highest stochastic gradient boosting accuracy of 96%.  The CART and LDA models performed poorly in comparison, with accuracies of 48% and 69%, respectively.
+Using cross validation, It can be seen that the top performing model is clearly the random forecast model, with an accuracy of over 99%, compared to the next highest stochastic gradient boosting accuracy of 96%.  The CART and LDA models performed poorly in comparison, with accuracies of 48% and 69%, respectively.
 
 Considering two poor performance of the CART and LDA models, only the random forecast & GBM models will be used in the combination model.  The model was generated using the validation data and tested against the the final testing dataset.  See below the results:
 
@@ -68,7 +98,7 @@ cm$overall
 
 ```
 
-Unsurprisingly, this gives nearly the exact same results as the random forest model, with an accuracy of 99.1%.  the 95% confidence interval for the out-of-sample accuracy is [98.9%, 99.4%], with an expected out of sample error of ~1%.
+Unsurprisingly, cross validation here gives nearly the exact same results as the random forest model, with an accuracy of 99.1%.  the 95% confidence interval for the out-of-sample accuracy is [98.9%, 99.4%], with an expected out of sample error of ~1%.
 
 ## References
 
